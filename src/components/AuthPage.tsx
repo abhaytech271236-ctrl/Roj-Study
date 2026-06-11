@@ -76,6 +76,8 @@ export default function AuthPage({ initialMode, onLoginSuccess, onNavigate }: Au
         errMsg = "Credential check failed: Please offer a valid format email address.";
       } else if (err.code === "auth/weak-password") {
         errMsg = "Password security warning: Choose a safer, stronger password.";
+      } else if (err.code === "auth/unauthorized-domain" || err.message?.includes("unauthorized-domain")) {
+        errMsg = "Firebase Auth Error: The domain 'roj-study.vercel.app' is not registered as an Authorized Domain in your Firebase Console. Please add 'roj-study.vercel.app' to your Firebase Console under Authentication > Settings > Authorized Domains.";
       } else if (err.message) {
         errMsg = err.message;
       }

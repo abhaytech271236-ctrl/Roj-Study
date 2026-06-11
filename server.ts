@@ -233,21 +233,60 @@ const STATS_DB_PATH = path.join(process.cwd(), "stats_db.json");
 
 interface StatsData {
   totalLearners: number;
+  lastIncrementDate?: string;
 }
 
 function getStats(): StatsData {
+  const todayString = new Date().toISOString().split("T")[0];
+  let stats: StatsData = {
+    totalLearners: 300,
+    lastIncrementDate: todayString
+  };
+
   try {
     if (fs.existsSync(STATS_DB_PATH)) {
       const raw = fs.readFileSync(STATS_DB_PATH, "utf8");
-      return JSON.parse(raw);
+      stats = JSON.parse(raw);
+    } else {
+      saveStats(stats);
+      return stats;
     }
   } catch (e) {
     console.error("Error reading stats database", e);
   }
-  // Baseline requested is 719
-  const defaultStats = { totalLearners: 719 };
-  saveStats(defaultStats);
-  return defaultStats;
+
+  // Ensure fields exist
+  if (typeof stats.totalLearners !== "number") {
+    stats.totalLearners = 300;
+  }
+  if (!stats.lastIncrementDate) {
+    stats.lastIncrementDate = todayString;
+  }
+
+  // If the date has roll-over/changed, we increment by 1 or 2 per elapsed day
+  if (stats.lastIncrementDate !== todayString) {
+    try {
+      const lastDate = new Date(stats.lastIncrementDate);
+      const todayDate = new Date(todayString);
+      const msDiff = todayDate.getTime() - lastDate.getTime();
+      const daysDiff = Math.max(0, Math.floor(msDiff / (1000 * 60 * 60 * 24)));
+
+      if (daysDiff > 0) {
+        let added = 0;
+        for (let i = 0; i < daysDiff; i++) {
+          added += Math.random() < 0.5 ? 1 : 2;
+        }
+        stats.totalLearners += added;
+        stats.lastIncrementDate = todayString;
+        saveStats(stats);
+        console.log(`📈 Day transitioned. Automatically added ${added} learners. Total: ${stats.totalLearners}`);
+      }
+    } catch (err) {
+      console.error("Error tracking daily totalLearners increment:", err);
+    }
+  }
+
+  return stats;
 }
 
 function saveStats(stats: StatsData) {
@@ -259,11 +298,11 @@ function saveStats(stats: StatsData) {
 }
 
 app.get("/api/learners-stats", (req, res) => {
-  // Let active learner values oscillate strictly inside [50, 150]
+  // Let active learner values oscillate strictly inside [10, 100]
   // Math.sin changes smoothly every couple of minutes
-  const wave = Math.sin(Date.now() / 120000) * 45; 
-  const noise = Math.sin(Date.now() / 10000) * 4 + ((Date.now() % 3) - 1); 
-  const activeCount = Math.min(150, Math.max(50, Math.round(100 + wave + noise)));
+  const wave = Math.sin(Date.now() / 120000) * 35; 
+  const noise = Math.sin(Date.now() / 10000) * 5 + ((Date.now() % 5) - 2); 
+  const activeCount = Math.min(100, Math.max(10, Math.round(55 + wave + noise)));
   
   const stats = getStats();
 

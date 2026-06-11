@@ -72,6 +72,8 @@ export default function AuthModal({ onClose, onLoginSuccess, initialMode = "LOGI
         errMsg = "Invalid email formatting. Please input a correct address.";
       } else if (err.code === "auth/weak-password") {
         errMsg = "Security warning: Choose a stronger password (min 6 characters).";
+      } else if (err.code === "auth/unauthorized-domain" || err.message?.includes("unauthorized-domain")) {
+        errMsg = "Firebase Auth Error: The domain 'roj-study.vercel.app' is not registered as an Authorized Domain in your Firebase Console. Please add 'roj-study.vercel.app' to your Firebase Console under Authentication > Settings > Authorized Domains.";
       } else if (err.message) {
         errMsg = err.message;
       }
