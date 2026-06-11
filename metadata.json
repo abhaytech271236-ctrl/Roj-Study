@@ -1,0 +1,6 @@
+{
+  "name": "Roj Study",
+  "description": "Futuristic e-learning platform with YouTube inspired layout, built-in coding playgrounds, community chat, certificate system, and Gemini-powered AI tutor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

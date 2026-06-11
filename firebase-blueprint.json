@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User accounts enrolled in Roz Study",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique Firebase Authentication UID"
+        },
+        "name": {
+          "type": "string",
+          "description": "User's display name"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User's primary registration email"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User's avatar profile image URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The signup join date timestamp"
+        },
+        "bio": {
+          "type": "string",
+          "description": "The student bio"
+        },
+        "xp": {
+          "type": "integer",
+          "description": "Accumulated experience points"
+        },
+        "streak": {
+          "type": "integer",
+          "description": "Current learning consecutive day streak"
+        },
+        "completedVideoIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lists of combined playlist-video reference keys completed"
+        },
+        "bookmarkedVideoIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Student bookmarked video references keys"
+        },
+        "certificates": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "Completed course credentials earned by user"
+        },
+        "watchHistory": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "description": "Chronological history list of items watched"
+        },
+        "examScores": {
+          "type": "object",
+          "description": "Key-value pair mapping playlistId to exam score percentage"
+        }
+      },
+      "required": ["uid", "name", "email", "photoURL", "createdAt"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "Real-time global chatroom message",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "avatar": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["name", "email", "avatar", "message", "timestamp", "createdAt", "userId"]
+    },
+    "OnlineUser": {
+      "title": "Online User Status",
+      "description": "Real-time user presence tracking",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "avatar": { "type": "string" },
+        "activity": { "type": "string" },
+        "lastActive": { "type": "integer" }
+      },
+      "required": ["userId", "name", "email", "avatar", "activity", "lastActive"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Secure user specific documents in the system database for tracking metadata"
+    },
+    "/chats/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Live global community chat logs"
+    },
+    "/online_users/{userId}": {
+      "schema": "OnlineUser",
+      "description": "Live active online user tracking presence"
+    }
+  }
+}

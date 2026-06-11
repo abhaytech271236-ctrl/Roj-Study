@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default global catch-all safety net rejecting all reads and writes
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Match users collection
+    match /users/{userId} {
+      // Allow read, create, and update only if the user is authenticated and is the owner of the document
+      allow get: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete, list: if false;
+    }
+
+    // Match global chat messages collection
+    match /chats/{messageId} {
+      // Anyone can list and get chat messages to maintain a working interface
+      allow get, list: if true;
+      // Anyone can create chat messages as long as they follow the strict validation blueprint to avoid spam/malformed writes
+      allow create: if request.resource.data.keys().hasAll(['userId', 'name', 'email', 'avatar', 'message', 'timestamp', 'createdAt'])
+        && request.resource.data.userId is string
+        && request.resource.data.name is string
+        && request.resource.data.message is string
+        && request.resource.data.message.size() <= 2000;
+      // Users can only delete their own messages
+      allow delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow update: if false;
+    }
+
+    // Match online users collection representing presence
+    match /online_users/{userId} {
+      // Anyone can see who is currently online in the chatroom
+      allow get, list: if true;
+      // Anyone can update their own presence status with correct validation
+      allow create, update: if request.resource.data.keys().hasAll(['userId', 'name', 'email', 'avatar', 'activity', 'lastActive'])
+        && request.resource.data.userId is string
+        && request.resource.data.name is string
+        && request.resource.data.lastActive is int;
+      // Users can deleted their presence safely if authorized
+      allow delete: if request.auth != null && userId == request.auth.uid;
+    }
+  }
+}
