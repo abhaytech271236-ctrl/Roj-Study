@@ -21,7 +21,7 @@ import {
 import firebaseConfig from "../../firebase-applet-config.json";
 
 // Detect if Firebase configuration has been successfully completed in the AI Studio UI
-export const IS_FIREBASE_CONFIGURED = !!(firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey.trim().length > 0);
+export const IS_FIREBASE_CONFIGURED = !!(firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey.trim().length > 0) && (typeof window !== "undefined" ? window.localStorage.getItem("rojstudy_local_simulation_mode") !== "true" : true);
 
 export interface AppUser {
   uid: string;

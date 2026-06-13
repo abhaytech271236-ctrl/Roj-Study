@@ -220,9 +220,28 @@ export default function AuthPage({ initialMode, onLoginSuccess, onNavigate }: Au
           )}
 
           {errorMsg && (
-            <div className="bg-red-950/40 border border-red-800/20 text-red-400 text-xs p-3.5 rounded-xl flex items-start gap-2 leading-relaxed animate-in slide-in-from-top-1 duration-200">
-              <AlertCircle className="h-4.5 w-4.5 shrink-0 text-red-400 mt-0.5" />
-              <span>{errorMsg}</span>
+            <div className="bg-red-950/40 border border-red-800/20 text-red-400 text-xs p-3.5 rounded-xl flex flex-col gap-2.5 leading-relaxed animate-in slide-in-from-top-1 duration-200">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="h-4.5 w-4.5 shrink-0 text-red-400 mt-0.5" />
+                <span>{errorMsg}</span>
+              </div>
+              {(errorMsg.includes("unauthorized-domain") || errorMsg.includes("Firebase Auth Error")) && (
+                <div className="mt-1 border-t border-red-800/25 pt-2 flex flex-col gap-2">
+                  <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
+                    💡 <strong>Quick Fix:</strong> Vercel setup requires adding "roj-study.vercel.app" to Firebase Authorized Domains. Don't want to configure? Click below to bypass immediately!
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      localStorage.setItem("rojstudy_local_simulation_mode", "true");
+                      window.location.reload();
+                    }}
+                    className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-[10px] font-mono py-2.5 px-3 rounded-lg transition-all text-center uppercase tracking-wider cursor-pointer"
+                  >
+                    🚀 Switch to Local Sandbox Mode (No Setup Dynamic Bypass)
+                  </button>
+                </div>
+              )}
             </div>
           )}
 

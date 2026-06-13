@@ -9,6 +9,24 @@ interface FooterProps {
 export default function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="bg-[#07070d] border-t border-white/5 pt-16 pb-8 px-4 sm:px-8 mt-auto">
+      {/* Local Simulation Mode Badge */}
+      {typeof window !== "undefined" && window.localStorage.getItem("rojstudy_local_simulation_mode") === "true" && (
+        <div className="max-w-7xl mx-auto mb-8 bg-cyan-950/20 border border-cyan-800/20 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-lg animate-pulse" style={{ animationDuration: '4s' }}>
+          <p className="text-slate-300 font-sans leading-relaxed text-center sm:text-left">
+            🔌 <strong>Simulation Mode Active:</strong> You are browsing the interactive platform in Developer Sandbox Mode, bypassing Firebase auth-domain setup restrictions. Enjoy uninhibited compilers & lecture logs!
+          </p>
+          <button
+            onClick={() => {
+              localStorage.removeItem("rojstudy_local_simulation_mode");
+              window.location.reload();
+            }}
+            className="shrink-0 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-mono text-[10px] font-bold py-2 px-4 rounded-xl uppercase tracking-widest cursor-pointer shadow-lg"
+          >
+            Switch to Cloud Mode
+          </button>
+        </div>
+      )}
+
       {/* Footer Google AdSense Unit */}
       {ADS_CONFIG.ENABLE_ADS && (
         <div className="max-w-7xl mx-auto mb-10">
