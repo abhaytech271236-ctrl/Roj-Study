@@ -22,6 +22,7 @@ import AIHelper from "./components/AIHelper";
 import AuthModal from "./components/AuthModal";
 import AuthPage from "./components/AuthPage";
 import CertificateModal from "./components/CertificateModal";
+import LegalViews from "./components/LegalViews";
 import Ads, { ADS_CONFIG } from "./components/Ads";
 import { rzAuth } from "./lib/firebase";
 
@@ -562,7 +563,18 @@ export default function App() {
   const [pendingAdminView, setPendingAdminView] = useState<string | null>(null);
 
   const handleNavWithGuard = (view: string) => {
-    if (view === "landing" || view === "faq" || view === "login" || view === "signup" || view === "forgot") {
+    if (
+      view === "landing" || 
+      view === "faq" || 
+      view === "login" || 
+      view === "signup" || 
+      view === "forgot" ||
+      view === "privacy" ||
+      view === "terms" ||
+      view === "disclaimer" ||
+      view === "about" ||
+      view === "contact"
+    ) {
       if (view === "login") setAuthModalMode("LOGIN");
       if (view === "signup") setAuthModalMode("SIGNUP");
       if (view === "forgot") setAuthModalMode("FORGOT");
@@ -587,6 +599,28 @@ export default function App() {
     setCurrentView(view);
     setSelectedPlaylistId(null);
   };
+
+  // Parse SEO and dynamic sitemap deep-linking URL queries on initialization mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const viewParam = params.get("view");
+      const playlistParam = params.get("playlist");
+      
+      if (viewParam) {
+        handleNavWithGuard(viewParam);
+      } else if (playlistParam) {
+        const found = playlists.find(p => p.id === playlistParam);
+        if (found) {
+          setSelectedPlaylistId(found.id);
+          setCurrentView("playlist-watching");
+          if (!userState.isLoggedIn) {
+            setIsAuthModalOpen(true);
+          }
+        }
+      }
+    }
+  }, [userState.isLoggedIn, playlists]);
 
   // Helper computed variables
   const unreadNotifCount = notifications.filter(n => !n.read).length;
@@ -763,6 +797,13 @@ export default function App() {
                     onBeginLearning={() => setCurrentView("dashboard")}
                   />
                 </div>
+              )}
+
+              {(currentView === "privacy" || currentView === "terms" || currentView === "disclaimer" || currentView === "about" || currentView === "contact") && (
+                <LegalViews 
+                  currentSubView={currentView} 
+                  onNavigate={handleNavWithGuard} 
+                />
               )}
 
               {currentView === "playlist-watching" && selectedPlaylist && (

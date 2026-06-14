@@ -114,10 +114,12 @@ export default function Footer({ onNavigate }: FooterProps) {
 
       <div className="max-w-7xl mx-auto border-t border-white/5 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500 font-mono">
         <span>© 2026 Roj Study Interactive Academy. All Rights Reserved.</span>
-        <div className="flex items-center gap-6">
-          <a href="#" className="hover:text-slate-300">Terms of Service</a>
-          <a href="#" className="hover:text-slate-300">Privacy Policy</a>
-          <a href="#" className="hover:text-slate-300">Cookie Preferences</a>
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <button onClick={() => onNavigate("about")} className="hover:text-slate-300 cursor-pointer text-left transition-colors font-mono uppercase tracking-wider text-[10px]">About Us</button>
+          <button onClick={() => onNavigate("contact")} className="hover:text-slate-300 cursor-pointer text-left transition-colors font-mono uppercase tracking-wider text-[10px]">Contact Us</button>
+          <button onClick={() => onNavigate("terms")} className="hover:text-slate-300 cursor-pointer text-left transition-colors font-mono uppercase tracking-wider text-[10px]">Terms of Service</button>
+          <button onClick={() => onNavigate("privacy")} className="hover:text-slate-300 cursor-pointer text-left transition-colors font-mono uppercase tracking-wider text-[10px]">Privacy Policy</button>
+          <button onClick={() => onNavigate("disclaimer")} className="hover:text-slate-300 cursor-pointer text-left transition-colors font-mono uppercase tracking-wider text-[10px]">Disclaimer</button>
         </div>
       </div>
     </footer>
