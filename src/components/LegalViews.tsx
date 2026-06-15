@@ -47,7 +47,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
       <div className="mb-8">
         <button
           onClick={() => onNavigate("landing")}
-          className="inline-flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-widest cursor-pointer bg-slate-900/60 hover:bg-slate-900 border border-white/5 px-4 py-2.5 rounded-xl text-center"
+          className="inline-flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-widest cursor-pointer bg-black/60 hover:bg-black border border-white/5 px-4 py-2.5 rounded-xl text-center"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to Home</span>
@@ -57,7 +57,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar Tabs */}
         <div className="lg:col-span-1 flex flex-col gap-2">
-          <div className="bg-slate-900/40 p-4 rounded-2xl border border-white/5 mb-4">
+          <div className="bg-black/80 p-4 rounded-2xl border border-white/5 mb-4 shadow-xl">
             <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1 font-mono">
               Academy Portal
             </h3>
@@ -79,8 +79,8 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-all text-xs text-left cursor-pointer font-medium ${
                     isActive
-                      ? "bg-gradient-to-r from-cyan-950/40 to-indigo-950/40 border-cyan-500/40 text-cyan-400 font-bold shadow-lg shadow-cyan-950/20"
-                      : "bg-slate-900/20 hover:bg-slate-900/60 border-white/5 text-slate-400 hover:text-slate-200"
+                      ? "bg-gradient-to-r from-black to-[#0a0a14] border-cyan-500/45 text-cyan-400 font-bold shadow-lg"
+                      : "bg-black/40 hover:bg-black/90 border-white/5 text-slate-400 hover:text-slate-200"
                   }`}
                 >
                   <Icon className={`h-4.5 w-4.5 ${isActive ? "text-cyan-400" : "text-slate-500"}`} />
@@ -92,7 +92,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
         </div>
 
         {/* Dynamic Content Panel */}
-        <div className="lg:col-span-3 bg-slate-900/30 border border-white/5 rounded-3xl p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden flex flex-col gap-6">
+        <div className="lg:col-span-3 bg-black/60 border border-white/5 rounded-3xl p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden flex flex-col gap-6">
           {/* subtle decorative background glows */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -134,7 +134,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
                 <p>
                   Roj Study remains completely free of charge, with optional integration setups designed to allow students to construct beautiful standalone sandbox databases and leverage modern cloud tools recursively.
                 </p>
-                <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-5 mt-4">
+                <div className="bg-black/70 border border-white/5 rounded-2xl p-5 mt-4">
                   <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-2 font-mono">Our Founding Principles</h4>
                   <p className="text-xs text-slate-400 leading-relaxed">
                     We believe modern application development and algorithmic reasoning are muscle skills that cannot be acquired simply by reading documentation. Continuous coding repetition, live sandboxes, immediate compiler responses, and realistic certification gates constitute our core blueprint for successful engineering education.
@@ -293,7 +293,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 {/* Contact Coordinates */}
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-white/5 space-y-4">
+                <div className="bg-black/70 p-5 rounded-2xl border border-white/5 space-y-4">
                   <h3 className="text-xs font-semibold text-white uppercase tracking-widest font-mono">
                     Official Contact Coordinates
                   </h3>
@@ -330,7 +330,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
                 </div>
 
                 {/* Form Portal */}
-                <div className="bg-slate-950/40 p-5 rounded-2xl border border-white/5">
+                <div className="bg-black/80 p-5 rounded-2xl border border-white/5">
                   <h3 className="text-xs font-semibold text-white uppercase tracking-widest font-mono mb-4">
                     Send An Immediate Message
                   </h3>
@@ -357,7 +357,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
                           value={contactName}
                           onChange={(e) => setContactName(e.target.value)}
                           placeholder="e.g. Abhay Dev"
-                          className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500 text-xs"
+                          className="w-full bg-black border border-white/10 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500/80 text-xs"
                         />
                       </div>
 
@@ -369,7 +369,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
                           value={contactEmail}
                           onChange={(e) => setContactEmail(e.target.value)}
                           placeholder="e.g. abhay@domain.com"
-                          className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500 text-xs"
+                          className="w-full bg-black border border-white/10 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500/80 text-xs"
                         />
                       </div>
 
@@ -381,7 +381,7 @@ export default function LegalViews({ currentSubView, onNavigate }: LegalViewsPro
                           value={contactMessage}
                           onChange={(e) => setContactMessage(e.target.value)}
                           placeholder="Type details about course requests, broken YouTube links, or certificates validation coordinates..."
-                          className="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-cyan-500 text-xs resize-none"
+                          className="w-full bg-black border border-white/10 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-cyan-500/80 text-xs resize-none"
                         />
                       </div>
 
