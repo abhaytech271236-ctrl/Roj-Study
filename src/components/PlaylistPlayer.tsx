@@ -1082,7 +1082,7 @@ export default function PlaylistPlayer({
         <div className={`${activeMobileTab === "syllabus" ? "flex" : "hidden xl:flex"} xl:col-span-4 flex-col gap-4 h-auto xl:h-[calc(100vh-140px)] sticky xl:overflow-y-auto scrollbar`}>
           
           {/* Playlist Completion Tracker Progress Panel */}
-          <div className="glass-panel rounded-2xl p-3.5 border border-white/10 text-left bg-black max-h-[240px] sm:max-h-[260px] overflow-y-auto scroll-smooth scrollbar relative group">
+          <div className="glass-panel rounded-2xl p-4 pb-6 border border-white/10 text-left bg-black max-h-[365px] sm:max-h-[385px] overflow-y-auto scroll-smooth scrollbar relative group">
             {playlistCompletionRate >= 100 && (
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 opacity-80 pointer-events-none" />
             )}
@@ -1164,7 +1164,7 @@ export default function PlaylistPlayer({
           </div>
 
           {/* RojStudy Interactive Certification Exam Panel */}
-          <div className="glass-panel rounded-2xl p-3.5 border border-cyan-500/20 bg-black text-left relative max-h-[180px] sm:max-h-[210px] overflow-y-auto scroll-smooth scrollbar group">
+          <div className="glass-panel rounded-2xl p-4 pb-6 border border-cyan-500/20 bg-black text-left relative max-h-[260px] sm:max-h-[280px] overflow-y-auto scroll-smooth scrollbar group">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-40 w-40 rounded-full bg-cyan-500/5 blur-[50px] pointer-events-none" />
             
             <span className="text-[9px] font-mono tracking-widest text-[#06b6d4] uppercase font-bold block mb-1">RojStudy Examination</span>
