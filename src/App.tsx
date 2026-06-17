@@ -603,11 +603,14 @@ export default function App() {
   // Parse SEO and dynamic sitemap deep-linking URL queries on initialization mount
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const path = window.location.pathname;
       const params = new URLSearchParams(window.location.search);
       const viewParam = params.get("view");
       const playlistParam = params.get("playlist");
       
-      if (viewParam) {
+      if (path === "/admin" || path.startsWith("/admin")) {
+        handleNavWithGuard("admin");
+      } else if (viewParam) {
         handleNavWithGuard(viewParam);
       } else if (playlistParam) {
         const found = playlists.find(p => p.id === playlistParam);

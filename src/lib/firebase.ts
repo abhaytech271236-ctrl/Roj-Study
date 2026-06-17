@@ -26,6 +26,7 @@ export const IS_FIREBASE_CONFIGURED = !!(firebaseConfig && firebaseConfig.apiKey
 export interface AppUser {
   uid: string;
   name: string;
+  displayName?: string;
   email: string;
   photoURL: string;
   createdAt: string;
@@ -161,10 +162,49 @@ export const rzAuth = {
           }
           if (docSnap && docSnap.exists()) {
             const data = docSnap.data();
+
+            // Check if existing user documents do not contain email or displayName, update them on next login/session load
+            let needsUpdate = false;
+            const updatePayload: any = {};
+            
+            console.log(`[Auth Observer DB Spec] uid: "${fbUser.uid}" | Auth user.email: "${fbUser.email}" | Firestore data.email: "${data.email}"`);
+
+            if ((!data.email || data.email === "") && fbUser.email) {
+              updatePayload.email = fbUser.email;
+              needsUpdate = true;
+              console.log(`[Auth Observer DB Spec] Debug - email was missing/empty in Firestore: "${data.email}". Synchronizing from Auth user.email: "${fbUser.email}"`);
+            }
+            if (!data.displayName && (fbUser.displayName || data.name)) {
+              updatePayload.displayName = fbUser.displayName || data.name || "Student";
+              needsUpdate = true;
+            }
+            if (!data.uid) {
+              updatePayload.uid = fbUser.uid;
+              needsUpdate = true;
+            }
+            if (!data.photoURL && (fbUser.photoURL || data.photoURL)) {
+              updatePayload.photoURL = fbUser.photoURL || data.photoURL;
+              needsUpdate = true;
+            }
+            if (!data.createdAt) {
+              updatePayload.createdAt = serverTimestamp();
+              needsUpdate = true;
+            }
+
+            if (needsUpdate) {
+              try {
+                await setDoc(docRef, updatePayload, { merge: true });
+                console.log(`[Auth Observer DB Spec] Debug - Firestore saved email value successfully synchronized: "${fbUser.email}"`);
+              } catch (writeErr) {
+                console.error(`[Auth Observer DB Spec] Error syncing missing email to user document:`, writeErr);
+              }
+            }
+
             callback({
               uid: fbUser.uid,
-              name: data.name || fbUser.displayName || "Student",
-              email: fbUser.email || "",
+              name: data.name || data.displayName || fbUser.displayName || "Student",
+              displayName: data.displayName || fbUser.displayName || data.name || "Student",
+              email: data.email || fbUser.email || "",
               photoURL: data.photoURL || fbUser.photoURL || `https://api.dicebear.com/7.x/adventurer/svg?seed=${fbUser.uid}`,
               createdAt: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : data.createdAt || new Date().toISOString(),
               bio: data.bio || "Enrolled in Roz Study Academy.",
@@ -181,6 +221,7 @@ export const rzAuth = {
             const newUser: AppUser = {
               uid: fbUser.uid,
               name: fbUser.displayName || "Graduate",
+              displayName: fbUser.displayName || "Graduate",
               email: fbUser.email || "",
               photoURL: fbUser.photoURL || `https://api.dicebear.com/7.x/adventurer/svg?seed=${fbUser.uid}`,
               createdAt: new Date().toISOString(),
@@ -193,10 +234,12 @@ export const rzAuth = {
               watchHistory: [],
               examScores: {}
             };
-            // Seed profile doc in Firestore asynchronously
+            // Seed profile doc in Firestore asynchronously including displayName, email, photoURL, createdAt
             try {
+              console.log(`[Auth Observer DB Spec] Seeding new user profile. Auth user.email: "${fbUser.email}", displayName: "${fbUser.displayName}"`);
               await setDoc(docRef, {
                 uid: newUser.uid,
+                displayName: fbUser.displayName || newUser.name,
                 name: newUser.name,
                 email: newUser.email,
                 photoURL: newUser.photoURL,
@@ -210,6 +253,7 @@ export const rzAuth = {
                 watchHistory: newUser.watchHistory,
                 examScores: newUser.examScores
               });
+              console.log(`[Auth Observer DB Spec] Seeding complete. Firestore saved email value: "${newUser.email}"`);
             } catch (setErr) {
               handleFirestoreError(setErr, OperationType.CREATE, `users/${fbUser.uid}`);
             }
@@ -460,8 +504,9 @@ export const rzAuth = {
         const data = docSnap.data();
         profile = {
           uid: fbUser.uid,
-          name: data.name || fbUser.displayName || "Google Pupil",
-          email: fbUser.email || "",
+          name: data.name || data.displayName || fbUser.displayName || "Google Pupil",
+          displayName: data.displayName || fbUser.displayName || data.name || "Google Pupil",
+          email: data.email || fbUser.email || "",
           photoURL: data.photoURL || fbUser.photoURL || `https://api.dicebear.com/7.x/adventurer/svg?seed=${fbUser.uid}`,
           createdAt: data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : data.createdAt || new Date().toISOString(),
           bio: data.bio || "Enrolled in Roz Study Academy.",
@@ -473,10 +518,50 @@ export const rzAuth = {
           watchHistory: data.watchHistory || [],
           examScores: data.examScores || {}
         };
+
+        // Requirement 2: If existing user documents do not contain email, update them on next login.
+        // Requirement 5: If email is missing, fetch it from Firebase Auth user object and save it to Firestore.
+        // Let's add debugging logs to verify: user.email value
+        console.log(`[Google Login DB Spec] uid: "${fbUser.uid}" | Auth user.email: "${fbUser.email}" | Firestore data.email: "${data.email}"`);
+
+        let needsUpdate = false;
+        const autoSaveObj: any = {};
+        
+        if ((!data.email || data.email === "") && fbUser.email) {
+          autoSaveObj.email = fbUser.email;
+          needsUpdate = true;
+          console.log(`[Google Login DB Spec] Debug - email was missing/empty in Firestore: "${data.email}". Synchronizing from Auth user.email: "${fbUser.email}"`);
+        }
+        if (!data.displayName && (fbUser.displayName || profile.name)) {
+          autoSaveObj.displayName = fbUser.displayName || profile.name;
+          needsUpdate = true;
+        }
+        if (!data.uid) {
+          autoSaveObj.uid = fbUser.uid;
+          needsUpdate = true;
+        }
+        if (!data.photoURL && profile.photoURL) {
+          autoSaveObj.photoURL = profile.photoURL;
+          needsUpdate = true;
+        }
+        if (!data.createdAt) {
+          autoSaveObj.createdAt = serverTimestamp();
+          needsUpdate = true;
+        }
+
+        if (needsUpdate) {
+          try {
+            await setDoc(userDocRef, autoSaveObj, { merge: true });
+            console.log(`[Google Login DB Spec] Debug - Firestore saved email value successfully synchronized: "${fbUser.email || data.email}"`);
+          } catch (writeErr) {
+            console.error(`[Google Login DB Spec] Error syncing user document on login:`, writeErr);
+          }
+        }
       } else {
         profile = {
           uid: fbUser.uid,
           name: fbUser.displayName || "Google Pupil",
+          displayName: fbUser.displayName || "Google Pupil",
           email: fbUser.email || "",
           photoURL: fbUser.photoURL || `https://api.dicebear.com/7.x/adventurer/svg?seed=${fbUser.uid}`,
           createdAt: new Date().toISOString(),
@@ -491,8 +576,11 @@ export const rzAuth = {
         };
         // Seed Google User Document in Firestore
         try {
+          // Requirement 6: Add debugging logs to verify user.email value
+          console.log(`[Google Login DB Spec] Seeding new Google User Profile. Auth user.email: "${fbUser.email}", displayName: "${fbUser.displayName}"`);
           await setDoc(userDocRef, {
             uid: profile.uid,
+            displayName: fbUser.displayName || profile.name,
             name: profile.name,
             email: profile.email,
             photoURL: profile.photoURL,
@@ -506,6 +594,8 @@ export const rzAuth = {
             watchHistory: profile.watchHistory,
             examScores: profile.examScores
           });
+          // Requirement 6: Add debugging logs to verify Firestore saved email value
+          console.log(`[Google Login DB Spec] Seeding complete. Firestore saved email value: "${profile.email}"`);
         } catch (setErr) {
           handleFirestoreError(setErr, OperationType.CREATE, `users/${fbUser.uid}`);
         }
