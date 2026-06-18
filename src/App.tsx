@@ -77,7 +77,7 @@ export default function App() {
       email: "",
       isLoggedIn: false,
       avatar: "",
-      bio: "Enrolled in Roz Study Academy.",
+      bio: "Enrolled in Roj Study Academy.",
       completedVideoIds: [],
       bookmarkedVideoIds: [],
       xp: 0,
@@ -99,7 +99,7 @@ export default function App() {
   // Structural details
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isLightMode, setIsLightMode] = useState(true);
+  const [isLightMode, setIsLightMode] = useState(false);
 
   // Notification list state container
   const [notifications, setNotifications] = useState<NotificationItem[]>([
@@ -209,7 +209,7 @@ export default function App() {
           email: user.email,
           avatar: user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user.name)}`,
           isLoggedIn: true,
-          bio: user.bio || "Enrolled in Roz Study Academy.",
+          bio: user.bio || "Enrolled in Roj Study Academy.",
           completedVideoIds: user.completedVideoIds || [],
           bookmarkedVideoIds: user.bookmarkedVideoIds || [],
           xp: typeof user.xp === 'number' ? user.xp : 0,
@@ -236,7 +236,7 @@ export default function App() {
           email: "",
           isLoggedIn: false,
           avatar: "",
-          bio: "Enrolled in Roz Study Academy.",
+          bio: "Enrolled in Roj Study Academy.",
           completedVideoIds: [],
           bookmarkedVideoIds: [],
           xp: 0,
@@ -306,7 +306,7 @@ export default function App() {
       email: "",
       isLoggedIn: false,
       avatar: "",
-      bio: "Enrolled in Roz Study Academy.",
+      bio: "Enrolled in Roj Study Academy.",
       completedVideoIds: [],
       bookmarkedVideoIds: [],
       xp: 0,

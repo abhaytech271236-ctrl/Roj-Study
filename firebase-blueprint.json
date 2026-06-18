@@ -2,7 +2,7 @@
   "entities": {
     "User": {
       "title": "User Profile",
-      "description": "User accounts enrolled in Roz Study",
+      "description": "User accounts enrolled in Roj Study",
       "type": "object",
       "properties": {
         "uid": {

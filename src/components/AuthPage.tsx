@@ -69,7 +69,7 @@ export default function AuthPage({ initialMode, onLoginSuccess, onNavigate }: Au
       if (err.code === "auth/invalid-credential" || err.message?.includes("wrong-password") || err.message?.includes("wrong")) {
         errMsg = "Authentication error: Incorrect password pattern or invalid student email.";
       } else if (err.code === "auth/email-already-in-use" || err.message?.includes("email-already-in-use")) {
-        errMsg = "Registration warning: Email already associated with Roz Study. Please Log In.";
+        errMsg = "Registration warning: Email already associated with Roj Study. Please Log In.";
       } else if (err.code === "auth/user-not-found" || err.message?.includes("user-not-found")) {
         errMsg = "Account warning: Email not registered. Click Register to create profile.";
       } else if (err.code === "auth/invalid-email") {
@@ -297,7 +297,7 @@ export default function AuthPage({ initialMode, onLoginSuccess, onNavigate }: Au
         <div className="border-t border-white/5 pt-5 mt-6 flex items-center justify-center text-xs text-slate-400">
           {mode === "LOGIN" && (
             <span>
-              New student to Roz Study?{" "}
+              New student to Roj Study?{" "}
               <button onClick={() => setMode("SIGNUP")} className="text-cyan-400 font-bold hover:underline cursor-pointer">Register Profile Free</button>
             </span>
           )}

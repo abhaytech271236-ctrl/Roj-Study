@@ -8,8 +8,21 @@ interface FooterProps {
 
 export default function Footer({ onNavigate }: FooterProps) {
   return (
-    <footer className="bg-[#07070d] border-t border-white/5 pt-16 pb-8 px-4 sm:px-8 mt-auto">
-      {/* Local Simulation Mode Badge */}
+    <footer className="relative overflow-hidden bg-[#07070d] border-t border-white/5 pt-16 pb-8 px-4 sm:px-8 mt-auto">
+      {/* Immersive Cyber Plexus Node Network Background */}
+      <div 
+        className="absolute inset-0 opacity-20 pointer-events-none mix-blend-screen bg-cover bg-center z-0 scale-105"
+        style={{ 
+          backgroundImage: `url('https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=1200&auto=format&fit=crop')`,
+          filter: 'hue-rotate(15deg) brightness(1.2)'
+        }}
+      ></div>
+      {/* Sleek top ambient glow lines and gradient overlays for pristine readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#07070d] via-transparent to-[#07070d]/95 pointer-events-none z-0"></div>
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#07070d]/40 to-[#07070d]/90 pointer-events-none z-0"></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Local Simulation Mode Badge */}
       {typeof window !== "undefined" && window.localStorage.getItem("rojstudy_local_simulation_mode") === "true" && (
         <div className="max-w-7xl mx-auto mb-8 bg-cyan-950/20 border border-cyan-800/20 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-lg animate-pulse" style={{ animationDuration: '4s' }}>
           <p className="text-slate-300 font-sans leading-relaxed text-center sm:text-left">
@@ -122,6 +135,7 @@ export default function Footer({ onNavigate }: FooterProps) {
           <button onClick={() => onNavigate("disclaimer")} className="hover:text-slate-300 cursor-pointer text-left transition-colors font-mono uppercase tracking-wider text-[10px]">Disclaimer</button>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
   );
 }
