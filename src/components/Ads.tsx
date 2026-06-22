@@ -11,8 +11,8 @@ import { Info } from "lucide-react";
  * 3. Fill the SLOTS object below with corresponding ad slot IDs from your AdSense Console.
  */
 export const ADS_CONFIG = {
-  ENABLE_ADS: false, // Turn on to show ad placeholders / active ads. Turn off to keep completely hidden.
-  PUBLISHER_ID: "ca-pub-9876543210123456", // Your real Google AdSense Publisher ID
+  ENABLE_ADS: true, // Turn on to show ad placeholders / active ads. Turn off to keep completely hidden.
+  PUBLISHER_ID: "ca-pub-8311821551045497", // Your real Google AdSense Publisher ID
   SLOTS: {
     TOP_BANNER: "8812940251",  // AdSense Leaderboard Slot ID
     IN_CONTENT: "1138409257",  // AdSense In-Content / Article Slot ID
