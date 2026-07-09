@@ -7,14 +7,14 @@ import { Info } from "lucide-react";
  * ============================================================================
  */
 export const ADS_CONFIG = {
-  ENABLE_ADS: true, // Turn on to show active ads.
-  PUBLISHER_ID: "ca-pub-8311821551045497", // Your real Google AdSense Publisher ID
+  ENABLE_ADS: false, // Turn off to completely remove/deactivate old script blocks.
+  PUBLISHER_ID: "", 
   SLOTS: {
-    TOP_BANNER: "8812940251",  // AdSense Leaderboard Slot ID
-    IN_CONTENT: "1138409257",  // AdSense In-Content / Article Slot ID
-    SIDEBAR: "4820194850",     // AdSense Sidebar / Tower Slot ID
-    FOOTER: "5591024823",      // AdSense Footer Link / Banner Slot ID
-    MOBILE_STICKY: "2209184561" // AdSense Mobile Anchor Slot ID
+    TOP_BANNER: "",  
+    IN_CONTENT: "",  
+    SIDEBAR: "",     
+    FOOTER: "",      
+    MOBILE_STICKY: "" 
   }
 };
 
