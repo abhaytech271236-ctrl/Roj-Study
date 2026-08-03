@@ -859,10 +859,10 @@ export const PLAYLISTS_DATA: Playlist[] = [
     videos: [
       {
         id: "v1",
-        title: "1. C Programming Tutorial for Beginners",
-        youtubeUrl: "https://www.youtube.com/watch?v=3lQTGZ1Vw74",
-        duration: "3:45:00",
-        description: "Master the foundations of application programming with C. Learn pointers, memory allocation, structures, syntax, variables, arrays, and standard libraries.",
+        title: "1. C Language Tutorial (With Notes + Surprise)",
+        youtubeUrl: "https://youtu.be/aZb0iu4uGwA?si=zQgPpSqirzvAOmPB",
+        duration: "10:32:15",
+        description: "Master the foundations of application programming with C. Learn pointers, memory allocation, structures, syntax, variables, arrays, and standard libraries with complete notes.",
         language: "c",
         exampleCode: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello, World from C!\\n\");\n    \n    int age = 21;\n    printf(\"Welcome to Roj Study Academy! Your age is %d.\\n\", age);\n    \n    return 0;\n}",
         practicePrompt: "Write a C program that declares an integer variable 'x' with value 10, a float variable 'y' with value 20.5, and prints their sum."
